@@ -13,6 +13,5 @@ const PageSchema = new Schema<IPageSchema>({
 PageSchema.plugin(softDeletePlugin);
 PageSchema.plugin(mongoosePaginate);
 
-const Page = model('Page', PageSchema) as unknown as IModel<IPageSchema>;
 
-export default Page;
+export default PageSchema;

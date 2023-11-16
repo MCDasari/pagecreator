@@ -1,8 +1,8 @@
 import joi from 'joi';
-import { Widget } from '../../models';
+// import { Widget } from '../../models';
 import { defaults } from '../defaults';
-import { VALIDATION } from '../../constants';
-import { getOne } from '../../services/dbService';
+// import { VALIDATION } from '../../constants';
+// import { getOne } from '../../services/dbService';
 import {
   ItemTypes,
   ItemsType,
@@ -14,19 +14,19 @@ import {
 
 type ItemValidation = IWidgetSchema & IDefaultValidations;
 
-const checkUnique = async (value: string) => {
-  let result;
-  try {
-    // throws error if document found
-    result = await getOne(Widget, {
-      code: value,
-    });
-    // eslint-disable-next-line no-empty
-  } catch (e) {}
-  if (result) {
-    throw new Error(VALIDATION.WIDGET_EXISTS);
-  }
-};
+// const checkUnique = async (value: string) => {
+//   let result;
+//   try {
+//     // throws error if document found
+//     result = await getOne(Widget, {
+//       code: value,
+//     });
+//     // eslint-disable-next-line no-empty
+//   } catch (e) {}
+//   if (result) {
+//     throw new Error(VALIDATION.WIDGET_EXISTS);
+//   }
+// };
 
 const srcset = joi.object().keys({
   screenSize: joi.number().required(),
@@ -60,7 +60,7 @@ export const create = joi.object<ItemValidation>({
     .string()
     .uppercase()
     .replace(/\s+/g, '_')
-    .external(checkUnique)
+    // .external(checkUnique)
     .required(),
   isActive: joi.boolean().default(true).optional(),
   autoPlay: joi.boolean().default(false).optional(),

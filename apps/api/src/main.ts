@@ -13,6 +13,7 @@ import {
   UserRoutes,
   handleUpdateData,
 } from '@knovator/pagecreator-node';
+import mongoose from 'mongoose';
 
 const app = express();
 app.use(cors());
@@ -57,9 +58,10 @@ app.use('/widgets', WidgetRoutes);
 app.use('/media', FileUploadRoute);
 app.use('/pages', PageRoutes);
 app.use('/users', UserRoutes);
-app.get('/delete', (req, res) => {
+app.get('/delete', (req:any, res) => {
+  const models = req?.clientDBConnection ? req.clientDBConnection.models : mongoose.models
   if (typeof req.query.id === 'string')
-    handleUpdateData('notifications', req.query.id);
+    handleUpdateData('notifications', req.query.id, models);
   res.send('All Okay');
 });
 app.use(resize(path.join(__dirname, 'public')));
