@@ -2,7 +2,7 @@ import { defaults } from './utils/defaults';
 import WidgetRoutes from './routes/WidgetRoute';
 import PageRoutes from './routes/PageRoute';
 import UserRoutes from './routes/UserRoute';
-import { WidgetSchema, ItemSchema, PageSchema } from './models';
+import { WidgetSchema, ItemSchema, PageSchema, SrcSetSchema, TabSchema} from './models';
 import { IConfig } from './types';
 import { handleUpdateData, handleResetData } from './services/dataService';
 
@@ -33,6 +33,8 @@ export {
   WidgetSchema,
   ItemSchema,
   PageSchema,
+  SrcSetSchema, 
+  TabSchema,
   setConfig,
   handleResetData,
   handleUpdateData,
