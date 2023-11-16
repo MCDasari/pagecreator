@@ -48,6 +48,5 @@ const ItemSchema = new Schema<IItemSchema>({
 ItemSchema.plugin(softDeletePlugin);
 ItemSchema.plugin(mongoosePaginate);
 
-const Item = model('Item', ItemSchema) as unknown as IModel<IItemSchema>;
 
-export default Item;
+export default ItemSchema;

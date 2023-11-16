@@ -51,9 +51,9 @@ const WidgetSchema = new Schema<IWidgetSchema>({
 WidgetSchema.plugin(softDeletePlugin);
 WidgetSchema.plugin(mongoosePaginate);
 
-const Widget = model(
-  'Widget',
-  WidgetSchema
-) as unknown as IModel<IWidgetSchema>;
+// const Widget = model(
+//   'Widget',
+//   WidgetSchema
+// ) as unknown as IModel<IWidgetSchema>;
 
-export default Widget;
+export default WidgetSchema;

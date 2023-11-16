@@ -1,5 +1,5 @@
-import { models, model, Schema, Types } from 'mongoose';
-import { Widget } from '../models';
+import { models, model, Schema, Types, Model } from 'mongoose';
+// import { Widget } from '../models';
 import { commonExcludedFields, defaults } from './defaults';
 import {
   IWidgetData,
@@ -8,7 +8,7 @@ import {
   SrcSetItem,
 } from '../types';
 
-export async function appendCollectionData(widgetData: IWidgetSchema[]) {
+export async function appendCollectionData(widgetData: IWidgetSchema[], Widget : Model<IWidgetSchema>) {
   // reduce widget data to optimize query
   const newData: IWidgetData = widgetData.reduce(
     (acc: IWidgetData, widget: IWidgetSchema) => {
@@ -265,11 +265,11 @@ export function AddSrcSetsToItems(widgetData: IWidgetSchema) {
   }
 }
 
-export const getCollectionModal = (collectionName: string) => {
-  let collectionModal: any = models[collectionName];
+export const getCollectionModal = (collectionName: string, connection:any) => {
+  let collectionModal: any = connection.models[collectionName];
   if (!collectionModal) {
     const schema = new Schema({}, { strict: false });
-    collectionModal = model(collectionName, schema, collectionName);
+    collectionModal = connection.model(collectionName, schema, collectionName);
   }
   return collectionModal;
 };

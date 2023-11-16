@@ -23,6 +23,4 @@ const TabSchema = new Schema<ITabSchema>({
 TabSchema.plugin(softDeletePlugin);
 TabSchema.plugin(mongoosePaginate);
 
-const Tab = model('Tab', TabSchema) as unknown as IModel<ITabSchema>;
-
-export default Tab;
+export default TabSchema;

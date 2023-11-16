@@ -1,7 +1,7 @@
-import Widget from './Widget';
-import Item from './Item';
-import Page from './Page';
-import SrcSet from './SrcSet';
-import Tab from './Tab';
+import WidgetSchema from './Widget';
+import ItemSchema from './Item';
+import PageSchema from './Page';
+import SrcSetSchema from './SrcSet';
+import TabSchema from './Tab';
 
-export { Widget, Item, Page, SrcSet, Tab };
+export { WidgetSchema, ItemSchema, PageSchema, SrcSetSchema, TabSchema };

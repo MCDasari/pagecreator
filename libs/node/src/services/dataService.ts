@@ -1,5 +1,4 @@
-import { AggregateOptions } from 'mongoose';
-import { Widget, Page } from './../models';
+import { AggregateOptions, Model } from 'mongoose';
 import {
   AddSrcSetsToItems,
   appendCollectionData,
@@ -41,7 +40,8 @@ const getAggregationQuery = ({
   return aggregateQueryItem;
 };
 
-export const getWidgetDataDB = async (code: string) => {
+export const getWidgetDataDB = async (code: string, connection:any) => {
+  const {Widget} = connection.models
   const widgetDataArr = (await Widget.aggregate([
     {
       $match: {
@@ -184,7 +184,7 @@ export const getWidgetDataDB = async (code: string) => {
       collectionName: widgetData.collectionName,
       ids: widgetData.collectionItems,
     });
-    const collectionModal: any = getCollectionModal(widgetData.collectionName);
+    const collectionModal: any = getCollectionModal(widgetData.collectionName, connection);
     const collectionItems = await collectionModal.aggregate(aggregateQueryItem);
     widgetData.collectionItems = collectionItems;
   }
@@ -205,7 +205,7 @@ export const getWidgetDataDB = async (code: string) => {
       ids: tabCollectionItemIds,
     });
 
-    const collectionModal: any = getCollectionModal(widgetData.collectionName);
+    const collectionModal: any = getCollectionModal(widgetData.collectionName, connection);
     const collectionItems: any = await collectionModal.aggregate(
       aggregateQueryItem
     );
@@ -228,14 +228,14 @@ export const getWidgetDataDB = async (code: string) => {
   return widgetData;
 };
 
-export const updateRedisWidget = async (code: string) => {
-  const widgetData = await getWidgetDataDB(code);
+export const updateRedisWidget = async (code: string, connection:any) => {
+  const widgetData = await getWidgetDataDB(code, connection);
   if (widgetData) {
     await setRedisValue(`widget_${code}`, widgetData as unknown as JSON);
   }
 };
 
-export const getPageDataDB = async (code: string) => {
+export const getPageDataDB = async (code: string, Page : Model<IPageSchema>, Widget : Model<IWidgetSchema>) => {
   const pageData: any = (await Page.aggregate([
     {
       $match: {
@@ -391,7 +391,7 @@ export const getPageDataDB = async (code: string) => {
   if (!pageData.length) {
     return null;
   }
-  pageData[0].widgetsData = await appendCollectionData(pageData[0].widgetsData);
+  pageData[0].widgetsData = await appendCollectionData(pageData[0].widgetsData, Widget);
   if (
     Array.isArray(pageData[0].widgetsData) &&
     pageData[0].widgetsData.length > 0
@@ -414,8 +414,8 @@ export const getPageDataDB = async (code: string) => {
   return pageData[0];
 };
 
-export const updateRedisPage = async (code: string) => {
-  const pageData = await getPageDataDB(code);
+export const updateRedisPage = async (code: string, Page : Model<IPageSchema>, Widget : Model<IWidgetSchema>) => {
+  const pageData = await getPageDataDB(code, Page, Widget);
   if (pageData) {
     await setRedisValue(`page_${code}`, pageData);
   }
@@ -423,8 +423,10 @@ export const updateRedisPage = async (code: string) => {
 
 export const handleUpdateData = async (
   collectionName: string,
-  itemId: string | string[]
+  itemId: string | string[],
+  models : any
 ) => {
+  const {Widget, Page} = models
   const widgets = await Widget.find(
     {
       collectionName: collectionName,
@@ -444,11 +446,11 @@ export const handleUpdateData = async (
       'code'
     ).distinct('code');
     if (pageCodes.length) {
-      pageCodes.forEach((code) => {
+      pageCodes.forEach((code: any) => {
         deleteRedisValue(`page_${code}`);
       });
     }
-    widgets.forEach((widget) => {
+    widgets.forEach((widget: any) => {
       deleteRedisValue(`widget_${widget.code}`);
     });
   }

@@ -1,5 +1,5 @@
-import { Types } from 'mongoose';
-import { Widget, Item, SrcSet } from './../models';
+import mongoose, { Types } from 'mongoose';
+// import { Widget, Item, SrcSet } from './../models';
 import {
   create,
   remove,
@@ -30,10 +30,11 @@ const catchAsync = (fn: any) => {
   return defaults.catchAsync(fn, 'Widget');
 };
 
-const deleteItems = async (widgetId: string) => {
+const deleteItems = async (widgetId: string, Item:any) => {
   await deleteAll(Item, { widgetId: new Types.ObjectId(widgetId) });
 };
-const createItems = async (itemsData: any[], widgetId: string) => {
+const createItems = async (itemsData: any[], widgetId: string, models : any) => {
+  const {Item,SrcSet} = models
   itemsData = itemsData.map((item: any) => ({
     ...item,
     _id: new Types.ObjectId(),
@@ -56,7 +57,9 @@ const createItems = async (itemsData: any[], widgetId: string) => {
 };
 
 export const createWidget = catchAsync(
-  async (req: IRequest, res: IResponse) => {
+  async (req: any, res: IResponse) => {
+    const models = req?.clientDBConnection ? req.clientDBConnection.models : mongoose.models
+    const {Widget} = models
     const data = req.body;
     let items = [];
     if ('items' in data) {
@@ -65,7 +68,7 @@ export const createWidget = catchAsync(
     }
     const widget = await create(Widget, data);
     if (items.length > 0) {
-      await createItems(items, widget._id);
+      await createItems(items, widget._id,models);
     }
     res.message = req?.i18n?.t('widget.create');
     return createdDocumentResponse(widget, res);
@@ -73,7 +76,9 @@ export const createWidget = catchAsync(
 );
 
 export const updateWidget = catchAsync(
-  async (req: IRequest, res: IResponse) => {
+  async (req: any, res: IResponse) => {
+    const connection = req?.clientDBConnection ? req.clientDBConnection : mongoose.connection
+    const {Widget, Item} = connection.models
     const data = req.body;
     const _id = req.params['id'];
     let items = [];
@@ -83,18 +88,19 @@ export const updateWidget = catchAsync(
     }
     const updatedWidget = await update(Widget, { _id }, data);
     if (items.length > 0 && updatedWidget) {
-      await deleteItems(_id);
-      await createItems(items, updatedWidget._id);
+      await deleteItems(_id, Item);
+      await createItems(items, updatedWidget._id,connection.models);
     }
-    if (updatedWidget) updateRedisWidget(updatedWidget.code);
+    if (updatedWidget) updateRedisWidget((updatedWidget as any).code, connection);
     res.message = req?.i18n?.t('widget.update');
     return successResponse(updatedWidget, res);
   }
 );
 
 export const deleteWidget = catchAsync(
-  async (req: IRequest, res: IResponse) => {
-    await deleteItems(req.params['id']);
+  async (req: any, res: IResponse) => {
+    const {Widget, Item} = req?.clientDBConnection ? req.clientDBConnection.models : mongoose.models
+    await deleteItems(req.params['id'],Item);
     const _id = new Types.ObjectId(req.params['id']);
     const deletedNotification = await remove(Widget, { _id });
     res.message = req?.i18n?.t('widget.delete');
@@ -102,7 +108,8 @@ export const deleteWidget = catchAsync(
   }
 );
 
-export const getWidgets = catchAsync(async (req: IRequest, res: IResponse) => {
+export const getWidgets = catchAsync(async (req: any, res: IResponse) => {
+  const {Widget} = req?.clientDBConnection ? req.clientDBConnection.models : mongoose.models
   const search = req.body.search || '';
   const { collectionItems } = req.body;
   const { page, limit, sort } = req.body.options;
@@ -139,7 +146,8 @@ export const getWidgets = catchAsync(async (req: IRequest, res: IResponse) => {
 });
 
 export const getSingleWidget = catchAsync(
-  async (req: IRequest, res: IResponse) => {
+  async (req: any, res: IResponse) => {
+    const {Item,Widget} = req?.clientDBConnection ? req.clientDBConnection.models : mongoose.models
     const _id = req.params['id'];
     const widget = await (
       await getOne(Widget, { _id, isDeleted: true })
@@ -254,7 +262,8 @@ export const getSingleWidget = catchAsync(
 );
 
 export const partialUpdateWidget = catchAsync(
-  async (req: IRequest, res: IResponse) => {
+  async (req: any, res: IResponse) => {
+    const {Widget} = req?.clientDBConnection ? req.clientDBConnection.models : mongoose.models
     const data = req.body;
     const _id = req.params['id'];
     const updatedNotification = await update(Widget, { _id }, data);
@@ -300,7 +309,8 @@ export const getWidgetTypes = catchAsync(
 );
 
 export const getCollectionData = catchAsync(
-  async (req: IRequest, res: IResponse) => {
+  async (req: any, res: IResponse) => {
+    const connection = req?.clientDBConnection ? req.clientDBConnection : mongoose.connection
     let limit = 10;
     const { search, collectionName, collectionItems } = req.body;
     if (Array.isArray(collectionItems))
@@ -313,7 +323,7 @@ export const getCollectionData = catchAsync(
       throw new Error(`No collection is specified with ${collectionName}`);
     }
     // setting up mongoose model
-    const TempModel = getCollectionModal(collectionName);
+    const TempModel = getCollectionModal(collectionName, connection);
     // fetching data
     let query: any = collectionItem.filters || {};
     const orOptions: any = [];
