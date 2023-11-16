@@ -1,0 +1,10 @@
+export declare const createWidget: (req: any, res: any, next: any) => void;
+export declare const updateWidget: (req: any, res: any, next: any) => void;
+export declare const deleteWidget: (req: any, res: any, next: any) => void;
+export declare const getWidgets: (req: any, res: any, next: any) => void;
+export declare const getSingleWidget: (req: any, res: any, next: any) => void;
+export declare const partialUpdateWidget: (req: any, res: any, next: any) => void;
+export declare const getItemsTypes: (req: any, res: any, next: any) => void;
+export declare const getWidgetTypes: (req: any, res: any, next: any) => void;
+export declare const getCollectionData: (req: any, res: any, next: any) => void;
+export declare const getLanguages: (req: any, res: any, next: any) => void;

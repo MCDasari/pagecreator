@@ -1,0 +1,10 @@
+import { Model, FilterQuery, QueryOptions, ProjectionType, HydratedDocument, QueryWithHelpers } from 'mongoose';
+import { EntityType, IModel, ReturnDocument } from '../types';
+export declare function create<T extends EntityType>(Modal: Model<T>, data: Partial<T>): Promise<ReturnDocument>;
+export declare function update<T extends EntityType>(Modal: Model<T>, query: FilterQuery<EntityType>, data: Partial<T>): Promise<T | undefined>;
+export declare function remove<T extends EntityType>(Modal: Model<T>, query: FilterQuery<EntityType>): Promise<ReturnDocument>;
+export declare function deleteAll<T extends EntityType>(Modal: Model<T>, query: FilterQuery<T>): Promise<import("mongodb").DeleteResult>;
+export declare function getAll<T extends EntityType>(Modal: Model<T>, query?: FilterQuery<EntityType>, options?: QueryOptions<EntityType>, projection?: ProjectionType<EntityType>): QueryWithHelpers<Array<T>, T, {}, T>;
+export declare function list<T extends EntityType>(Modal: IModel<T>, where: FilterQuery<T>, options: QueryOptions<T>): Promise<ReturnDocument[]>;
+export declare function getOne<T extends EntityType>(Modal: Model<T>, query: FilterQuery<EntityType>, projection?: ProjectionType<EntityType>): Promise<HydratedDocument<T>>;
+export declare function bulkInsert<T extends EntityType>(Modal: Model<T>, docs: T[]): Promise<ReturnDocument[]>;
