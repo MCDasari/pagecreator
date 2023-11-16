@@ -14,6 +14,7 @@
     "lint:node": "nx run node:lint",
     "build:node": "nx run node:build",
     "dev": "nx run-many --target=serve --projects=api,pagecreator,front",
+    "postinstall": "nx run-many --target=build --projects=node,admin,user",
     "start:user": "nx run user:serve",
     "build:user": "nx run user:css && nx run user:build",
     "css:user": "nx run user:css"
