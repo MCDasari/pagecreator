@@ -12,7 +12,9 @@ const titlesSchema = ((_a = defaults_1.defaults.languages) === null || _a === vo
     return acc;
 }, {})) || {};
 const imagesSchema = ((_b = defaults_1.defaults.languages) === null || _b === void 0 ? void 0 : _b.reduce((acc, lang) => {
-    acc[lang.code] = { type: mongoose_1.Schema.Types.ObjectId, ref: 'file' };
+    acc[lang.code] = { type: mongoose_1.Schema.Types.ObjectId,
+        // ref: 'file' 
+    };
     return acc;
 }, {})) || {};
 const altTextsSchema = ((_c = defaults_1.defaults.languages) === null || _c === void 0 ? void 0 : _c.reduce((acc, lang) => {
@@ -22,7 +24,7 @@ const altTextsSchema = ((_c = defaults_1.defaults.languages) === null || _c === 
 const ItemSchema = new mongoose_1.Schema({
     widgetId: {
         type: mongoose_1.Types.ObjectId,
-        ref: 'Widget',
+        // ref: 'Widget',
     },
     title: String,
     titles: titlesSchema,
@@ -32,7 +34,9 @@ const ItemSchema = new mongoose_1.Schema({
     altTexts: altTextsSchema,
     link: String,
     sequence: Number,
-    img: { type: mongoose_1.Schema.Types.ObjectId, ref: 'file' },
+    img: { type: mongoose_1.Schema.Types.ObjectId,
+        // ref: 'file' 
+    },
     imgs: imagesSchema,
     itemType: {
         type: String,

@@ -15,7 +15,7 @@ const TabSchema = new Schema<ITabSchema>({
   names: namesSchema,
   widgetId: {
     type: Types.ObjectId,
-    ref: 'Widget',
+    // ref: 'Widget',
   },
   collectionItems: [{ type: Types.ObjectId }],
 });

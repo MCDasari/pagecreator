@@ -8,7 +8,9 @@ const PageSchema = new mongoose_1.Schema({
     name: String,
     code: String,
     slug: String,
-    widgets: [{ type: mongoose_1.Types.ObjectId, ref: 'Widget' }],
+    widgets: [{ type: mongoose_1.Types.ObjectId,
+            // ref: 'Widget' 
+        }],
 });
 PageSchema.plugin(softDelete_1.softDeletePlugin);
 PageSchema.plugin(mongoose_paginate_v2_1.default);

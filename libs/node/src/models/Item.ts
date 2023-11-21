@@ -12,7 +12,9 @@ const titlesSchema =
 
 const imagesSchema =
   defaults.languages?.reduce((acc: any, lang) => {
-    acc[lang.code] = { type: Schema.Types.ObjectId, ref: 'file' };
+    acc[lang.code] = { type: Schema.Types.ObjectId, 
+      // ref: 'file' 
+  };
     return acc;
   }, {}) || {};
 
@@ -25,7 +27,7 @@ const altTextsSchema =
 const ItemSchema = new Schema<IItemSchema>({
   widgetId: {
     type: Types.ObjectId,
-    ref: 'Widget',
+    // ref: 'Widget',
   },
   title: String,
   titles: titlesSchema,
@@ -35,7 +37,9 @@ const ItemSchema = new Schema<IItemSchema>({
   altTexts: altTextsSchema,
   link: String,
   sequence: Number,
-  img: { type: Schema.Types.ObjectId, ref: 'file' },
+  img: { type: Schema.Types.ObjectId, 
+    // ref: 'file' 
+},
   imgs: imagesSchema,
   itemType: {
     type: String,

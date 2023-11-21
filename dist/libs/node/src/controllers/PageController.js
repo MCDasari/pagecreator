@@ -39,9 +39,10 @@ exports.deletePage = catchAsync((req, res) => tslib_1.__awaiter(void 0, void 0, 
 }));
 exports.getPages = catchAsync((req, res) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     var _d;
-    const { Page } = (req === null || req === void 0 ? void 0 : req.clientDBConnection) ? req.clientDBConnection.models : mongoose_1.default.models;
+    const { Page, Widget } = (req === null || req === void 0 ? void 0 : req.clientDBConnection) ? req.clientDBConnection.models : mongoose_1.default.models;
     const search = req.body.search || '';
     const { page, limit, populate, sort } = req.body.options;
+    console.log("Populate options-getPages", populate);
     const customOptions = Object.assign({ populate,
         sort }, (page && limit ? { page, limit } : {}));
     const query = {

@@ -40,9 +40,10 @@ export const deletePage = catchAsync(async (req: any, res: IResponse) => {
 });
 
 export const getPages = catchAsync(async (req: any, res: IResponse) => {
-  const {Page} = req?.clientDBConnection ? req.clientDBConnection.models : mongoose.models
+  const {Page,Widget} = req?.clientDBConnection ? req.clientDBConnection.models : mongoose.models
   const search = req.body.search || '';
   const { page, limit, populate, sort } = req.body.options;
+  console.log("Populate options-getPages",populate)
   const customOptions = {
     populate,
     sort,

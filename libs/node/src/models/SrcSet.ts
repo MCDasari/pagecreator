@@ -7,7 +7,7 @@ const SrcSetSchema = new Schema<ISrcSetSchema>({
   screenSize: Number,
   itemId: {
     type: Types.ObjectId,
-    ref: 'Item',
+    // ref: 'Item',
   },
 });
 

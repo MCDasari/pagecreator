@@ -15,7 +15,7 @@ const TabSchema = new mongoose_1.Schema({
     names: namesSchema,
     widgetId: {
         type: mongoose_1.Types.ObjectId,
-        ref: 'Widget',
+        // ref: 'Widget',
     },
     collectionItems: [{ type: mongoose_1.Types.ObjectId }],
 });

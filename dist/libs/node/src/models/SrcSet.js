@@ -7,7 +7,7 @@ const SrcSetSchema = new mongoose_1.Schema({
     screenSize: Number,
     itemId: {
         type: mongoose_1.Types.ObjectId,
-        ref: 'Item',
+        // ref: 'Item',
     },
 });
 exports.default = SrcSetSchema;
