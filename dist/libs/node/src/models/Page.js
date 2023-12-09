@@ -6,7 +6,7 @@ const mongoose_paginate_v2_1 = tslib_1.__importDefault(require("mongoose-paginat
 const softDelete_1 = require("../plugins/softDelete");
 const PageSchema = new mongoose_1.Schema({
     name: String,
-    code: String,
+    code: { type: String, index: true },
     slug: String,
     widgets: [{ type: mongoose_1.Types.ObjectId,
             // ref: 'Widget' 

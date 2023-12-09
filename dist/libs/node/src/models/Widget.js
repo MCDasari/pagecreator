@@ -13,7 +13,7 @@ const languageTitlesSchema = ((_a = defaults_1.defaults.languages) === null || _
 }, {})) || {};
 const WidgetSchema = new mongoose_1.Schema({
     name: String,
-    code: String,
+    code: { type: String, index: true },
     autoPlay: {
         type: Boolean,
         default: false,
