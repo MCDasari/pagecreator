@@ -12,7 +12,7 @@ const languageTitlesSchema =
 
 const WidgetSchema = new Schema<IWidgetSchema>({
   name: String,
-  code: String,
+  code: { type: String, index: true },
   autoPlay: {
     type: Boolean,
     default: false,

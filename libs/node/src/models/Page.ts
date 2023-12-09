@@ -5,7 +5,7 @@ import { IModel, IPageSchema } from '../types';
 
 const PageSchema = new Schema<IPageSchema>({
   name: String,
-  code: String,
+  code: { type: String, index: true },
   slug: String,
   widgets: [{ type: Types.ObjectId, 
     // ref: 'Widget' 
